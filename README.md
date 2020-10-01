@@ -14,5 +14,6 @@ Visualization Using Hexagonal Grid IL-SOM
 ## 참고 자료
 
 * [논문 원문](https://drive.google.com/file/d/1MQvHF_roYARn-eJHJXq2UptAskAG-azw/view?usp=sharing)
+* [논문 발표용](https://drive.google.com/file/d/11hVr9lPPbJaZN_aOLxj_cAfrWPR6Vdoe/view?usp=sharing)
 * [KCI 등재 자료](https://drive.google.com/file/d/14bEJRKqDYdm2tzGY0JqctHt6jveP7OtQ/view?usp=sharing)
 
