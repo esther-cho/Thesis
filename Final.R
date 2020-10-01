@@ -63,8 +63,8 @@ for(j in 1:100)
     
     for(j in 1 : r^2)
     {
-      index_list[[j]]$adj_index = EVEN(j, r) #이건무슨함수지
-      index_list[[j]]$directions = DIRECTION_TRIANGLE(j, EVEN(j, r)) #이것도무슨함수지
+      index_list[[j]]$adj_index = EVEN(j, r) 
+      index_list[[j]]$directions = DIRECTION_TRIANGLE(j, EVEN(j, r)) 
     }
     
     EVEN = function(c, r)
@@ -74,17 +74,16 @@ for(j in 1:100)
     }
     
     
-    ## Split odd r case and even r case
-    
+## Split odd r case and even r case
     index_list = EVEN_R(index_list, Aind, r)
     
-    ## Renew direction triangle matrix
+## Renew direction triangle matrix
     for(j in 1 : length(index_list))
       index_list[[j]]$directions = DIRECTION_TRIANGLE(j, index_list[[j]]$adj_index)
     return(index_list)
   }
   
-  ## 4개의 direction을 구축하는 rectangular 의 꼭지점들 저장.
+## 4개의 direction을 구축하는 rectangular 의 꼭지점들 저장.
   DIRECTION_TRIANGLE = function(j, index_mat) #index_mat=EVEN(c,r)
   {
     direction_mat = matrix(0, nrow = 4, ncol = 4)
@@ -99,8 +98,7 @@ for(j in 1:100)
   }
   
   
-  
-  # r이 짝수일 때 artificial node 삽입. 하지만 짝수는 없긴함
+# r이 짝수일 때 artificial node 삽입. 하지만 짝수는 없긴함
   EVEN_R = function(index_list, Aind, r)
   {
     left_bounds = sort(Aind[which(round((Aind - 1) / r) == (Aind - 1) / r)])
@@ -109,7 +107,7 @@ for(j in 1:100)
     lower_bounds = sort(Aind[Aind != 1 & Aind < r])
     
     
-    # 5 artificial node case TYPE1~4
+# 5 artificial node case TYPE1~4
     five = c(1,r,r^2-r+1,r^2)
     index_list[[five[1]]]$adj_index = TYPE1(index_list[[five[1]]]$adj_index)
     index_list[[five[2]]]$adj_index = TYPE2(index_list[[five[2]]]$adj_index)
@@ -117,30 +115,32 @@ for(j in 1:100)
     index_list[[five[4]]]$adj_index = TYPE4(index_list[[five[4]]]$adj_index)
     
     
-    
-    ## 3 artifiacial case TYPE5_1~TYPE5_4
-    # lower three case TYPE TYPE5_1
+# 3 artifiacial case TYPE5_1~TYPE5_4
+# lower three case TYPE TYPE5_1
     lower_three = lower_bounds
     for (j in 1 : length(lower_three))
     {
       node = lower_three[j]
       index_list[[node]]$adj_index = TYPE5_1(index_list[[node]]$adj_index)
     }
-    # upper three case TYPE TYPE5_2
+
+# upper three case TYPE TYPE5_2
     upper_three = upper_bounds
     for (j in 1 : length(upper_three))
     {
       node = upper_three[j]
       index_list[[node]]$adj_index = TYPE5_2(index_list[[node]]$adj_index)
     }
-    # left three case TYPE TYPE5_3
+
+# left three case TYPE TYPE5_3
     left_three = left_bounds[-c(1,length(left_bounds))]
     for (j in 1 : length(left_three))
     {
       node = left_three[j]
       index_list[[node]]$adj_index = TYPE5_3(index_list[[node]]$adj_index)
     }
-    # right three case TYPE TYPE5_4
+
+# right three case TYPE TYPE5_4
     right_three = right_bounds[-c(1,length(right_bounds))]
     for (j in 1 : length(right_three))
     {
@@ -276,17 +276,17 @@ for(j in 1:100)
     
     iris.grid = function(r) somgrid(xdim =r, ydim=r, topo="rectangular")
     
-    # build model
+# build model
     iris.som = som(iris.sc, grid=iris.grid(r), rlen=100, alpha=c(0.25,0.001))
     
-    #pd 들의 max를 구하기 위해 비교하는 함수 likelihood 반환 x, k, r, l, c : vector (c는 대각선벡터)
+#pd 들의 max를 구하기 위해 비교하는 함수 likelihood 반환 x, k, r, l, c : vector (c는 대각선벡터)
     pd=function(x,k,l,r,c){exp(-0.5*euc.dist(x,k))+exp(-0.5*euc.dist(x,l))+exp(-0.5*euc.dist(x,r))+exp(-0.5*euc.dist(x,c))}
     
-    # function "euc.dist" : 벡터 x1과 x2 사이의 유클리디안제곱거리
+# function "euc.dist" : 벡터 x1과 x2 사이의 유클리디안제곱거리
     euc.dist <- function(x1, x2) (sum((x1 - x2) ^ 2)) # 
     
     
-    #function "arrow" : rxr 그리드 SOM에서 i 번째 객체의 8개방향에 대한 가상벡터 (승자벡터+방향벡터) 8,7,6,5,4,3,2,1 방향 순
+#function "arrow" : rxr 그리드 SOM에서 i 번째 객체의 8개방향에 대한 가상벡터 (승자벡터+방향벡터) 8,7,6,5,4,3,2,1 방향 순
     arrow=function(r,i)rbind(iris.som$codes[[1]][iris.som$unit.classif[i],]+iris.som$codes[[1]][1,]-iris.som$codes[[1]][r+2,],
                              iris.som$codes[[1]][iris.som$unit.classif[i],]+iris.som$codes[[1]][2,]-iris.som$codes[[1]][r+2,],
                              iris.som$codes[[1]][iris.som$unit.classif[i],]+iris.som$codes[[1]][2,]-iris.som$codes[[1]][r+1,],
@@ -296,17 +296,17 @@ for(j in 1:100)
                              iris.som$codes[[1]][iris.som$unit.classif[i],]+iris.som$codes[[1]][r+1,]-iris.som$codes[[1]][2,],
                              iris.som$codes[[1]][iris.som$unit.classif[i],]+iris.som$codes[[1]][1,]-iris.som$codes[[1]][2,])
     
-    # function "fincodes" : 원래 생성된 m개의 중량벡터 뒤에 8개의가상벡터연결
+# function "fincodes" : 원래 생성된 m개의 중량벡터 뒤에 8개의가상벡터연결
     fincodes=function(r,i)rbind(as.matrix(iris.som$codes[[1]]), arrow(r,i))
     
     
-    # r노드일때, i 번째 객체의 j번째 방향애 대한 k(node index) 함수 k=1(승자노드), k=2(왼쪽노드),k=3(대각선 노드), k=4(오른쪽노드) 중량벡터
+# r노드일때, i 번째 객체의 j번째 방향애 대한 k(node index) 함수 k=1(승자노드), k=2(왼쪽노드),k=3(대각선 노드), k=4(오른쪽노드) 중량벡터
     krl=function(i,j,k,r)fincodes(r,i)[ifelse(aa[[iris.som$unit.classif[i] ]]$directions[j,k]>0,
                                               aa[[iris.som$unit.classif[i] ]]$directions[j,k],
                                               nrow(fincodes(r,i))+aa[[iris.som$unit.classif[i] ]]$directions[j,k]+1),] 
     
     
-    #하고싶은건, 각 개체에 따라 8개의 방향에 대하여 최대인 방향찾고 그 방향 나타내는 index 저장
+# 각 개체에 따라 8개의 방향에 대하여 최대인 방향찾고 그 방향 나타내는 index 저장
     
     direction_vector = rep(0, 200)
     
@@ -324,7 +324,7 @@ for(j in 1:100)
     } 
     
     
-    #finwight = 각 개체의 최종 개체가 표현될 승자노드,왼쪽노드,오른쪽 노드 중량벡터의 list
+# finwight = 각 개체의 최종 개체가 표현될 승자노드,왼쪽노드,오른쪽 노드 중량벡터의 list
     
     finweight=list()
     
@@ -352,13 +352,14 @@ for(j in 1:100)
     for(i in 1:200){
       finweight[[i]]= EACHVECTOR(r,i) #r 을 매번 바꿔주기 
     }
-    
-    ##  가능도함수 생성 및 p_r, p_l 함수 만들기
+
+#  가능도함수 생성 및 p_r, p_l 함수 만들기
     lik=function(i,w,b){
       exp((-0.5/b)*t(i-w)%*%(i-w))
     }
-    # function "p_r, p_l" : cxc SOM에서 
-    # i 번째 데이터에 대한 b=beta 가능도
+
+# function "p_r, p_l" : cxc SOM에서 i 번째 데이터에 대한 b=beta 가능도
+
     p_h=function(i,b) {
       lik(iris.sc[i,],finweight[[i]][1,],b)/
         (lik(iris.sc[i,],finweight[[i]][4,],b)+lik(iris.sc[i,],finweight[[i]][1,],b)) }
@@ -367,7 +368,7 @@ for(j in 1:100)
       lik(iris.sc[i,],finweight[[i]][1,],b)/
         (lik(iris.sc[i,],finweight[[i]][2,],b)+lik(iris.sc[i,],finweight[[i]][1,],b)) }
     
-    ##########coord 함수사용해서 beta구하기 여기서 a=p_r, b=p_l , k=승자노드, r=오른쪽노드, l=왼쪽노드
+#coord 함수사용해서 beta구하기 여기서 a=p_r, b=p_l , k=승자노드, r=오른쪽노드, l=왼쪽노드
     coord=function(i,b){
       p_h(i,b)*p_v(i,b)*finweight[[i]][1,]+
         (1-p_h(i,b))*p_v(i,b)*finweight[[i]][4,]+
@@ -375,7 +376,7 @@ for(j in 1:100)
         (1-p_h(i,b))*(1-p_v(i,b))*finweight[[i]][3,]
     }
     
-    #Q_beta 함수
+#Q_beta 함수
     
     Q_beta=function(b) {
       for(i in 1:200) {
@@ -414,6 +415,7 @@ Q_final=matrix(0,12,1)
 for(j in 1:100)
 {
   s=S[j]
+
   #Group 1
   set.seed(s)
   Sigma <- diag(c(1,1,1,1))
@@ -432,7 +434,7 @@ for(j in 1:100)
   simulation[151:200,]=mvrnorm(n = 50, c(0, 0, (2.5*6*sqrt(2))/(4*sqrt(3)),0), Sigma)
   
   
-  #모의실험 분석
+#모의실험 분석
   
   iris.sc=simulation
   
@@ -444,26 +446,26 @@ for(j in 1:100)
     
     iris.grid = function(r) somgrid(xdim =r, ydim=r, topo="rectangular")
     
-    # build model
+# build model
     iris.som = som(iris.sc, grid=iris.grid(r), rlen=100, alpha=c(0.25,0.001))
     
-    #pd 들의 max를 구하기 위해 비교하는 함수 likelihood 반환 x, k, r, l, c : vector (c는 대각선벡터)
+#pd 들의 max를 구하기 위해 비교하는 함수 likelihood 반환 x, k, r, l, c : vector (c는 대각선벡터)
     pd=function(x,k,l,r,c){exp(-0.5*euc.dist(x,k))+exp(-0.5*euc.dist(x,l))+exp(-0.5*euc.dist(x,r))+exp(-0.5*euc.dist(x,c))}
     
-    # function "euc.dist" : 벡터 x1과 x2 사이의 유클리디안제곱거리
+# function "euc.dist" : 벡터 x1과 x2 사이의 유클리디안제곱거리
     euc.dist <- function(x1, x2) (sum((x1 - x2) ^ 2)) # 
     
     
-    # function "fincodes" : 원래 생성된 m개의 중량벡터 뒤에 8개의가상벡터연결
+# function "fincodes" : 원래 생성된 m개의 중량벡터 뒤에 8개의가상벡터연결
     fincodes=function(r,i)rbind(as.matrix(iris.som$codes[[1]]), matrix(c(100,100,100,100),1,4))
     
     
-    # r노드일때, i 번째 객체의 j번째 방향애 대한 k(node index) 함수 k=1(승자노드), k=2(왼쪽노드),k=3(대각선 노드), k=4(오른쪽노드) 중량벡터
+# r노드일때, i 번째 객체의 j번째 방향애 대한 k(node index) 함수 k=1(승자노드), k=2(왼쪽노드),k=3(대각선 노드), k=4(오른쪽노드) 중량벡터
     krl=function(i,j,k,r)fincodes(r,i)[ifelse(aa[[iris.som$unit.classif[i] ]]$directions[j,k]>0,
                                               aa[[iris.som$unit.classif[i] ]]$directions[j,k],
                                               nrow(fincodes(r,i))),] 
     
-    #하고싶은건, 각 개체에 따라 8개의 방향에 대하여 최대인 방향찾고 그 방향 나타내는 index 저장
+# 각 개체에 따라 8개의 방향에 대하여 최대인 방향찾고 그 방향 나타내는 index 저장
     
     direction_vector = rep(0, 200)
     
@@ -479,7 +481,7 @@ for(j in 1:100)
       cat("max direction = ", maxi_index, "value = ", maxi, "\n")
     } 
     
-    #finwight = 각 개체의 최종 개체가 표현될 승자노드,왼쪽노드,오른쪽 노드 중량벡터의 list
+#finwight = 각 개체의 최종 개체가 표현될 승자노드,왼쪽노드,오른쪽 노드 중량벡터의 list
     
     finweight=list()
     
@@ -509,12 +511,13 @@ for(j in 1:100)
       finweight[[i]]= EACHVECTOR(r,i) #r 을 매번 바꿔주기 
     }
     
-    ##  가능도함수 생성 및 p_r, p_l 함수 만들기
+#  가능도함수 생성 및 p_r, p_l 함수 만들기
     lik=function(i,w,b){
       exp((-0.5/b)*t(i-w)%*%(i-w))
     }
-    # function "p_r, p_l" : cxc SOM에서 
-    # i 번째 데이터에 대한 b=beta 가능도
+
+# function "p_r, p_l" : cxc SOM에서 i 번째 데이터에 대한 b=beta 가능도
+
     p_h=function(i,b) {
       lik(iris.sc[i,],finweight[[i]][1,],b)/
         (lik(iris.sc[i,],finweight[[i]][4,],b)+lik(iris.sc[i,],finweight[[i]][1,],b)) }
@@ -523,7 +526,7 @@ for(j in 1:100)
       lik(iris.sc[i,],finweight[[i]][1,],b)/
         (lik(iris.sc[i,],finweight[[i]][2,],b)+lik(iris.sc[i,],finweight[[i]][1,],b)) }
     
-    ##########coord 함수사용해서 beta구하기 여기서 a=p_r, b=p_l , k=승자노드, r=오른쪽노드, l=왼쪽노드
+#coord 함수사용해서 beta구하기 여기서 a=p_r, b=p_l , k=승자노드, r=오른쪽노드, l=왼쪽노드
     coord=function(i,b){
       p_h(i,b)*p_v(i,b)*finweight[[i]][1,]+
         (1-p_h(i,b))*p_v(i,b)*finweight[[i]][4,]+
@@ -531,7 +534,7 @@ for(j in 1:100)
         (1-p_h(i,b))*(1-p_v(i,b))*finweight[[i]][3,]
     }
     
-    #Q_beta 함수
+#Q_beta 함수
     
     Q_beta=function(b) {
       for(i in 1:200) {
@@ -612,7 +615,7 @@ INDEX = function(r)
 # Operations
 # =================================================================
 
-## 홀수번째 행인지, 짝수번째 행인지 따라서 육각형 index를 계산하는 함수
+# 홀수번째 행인지, 짝수번째 행인지 따라서 육각형 index를 계산하는 함수
 EVEN = function(c, r)
 {
   adjacent = c(c - 1, c + r - 1, c + r, c - r - 1, c - r, c + 1)
@@ -626,7 +629,7 @@ ODD = function(c, r)
   return(matrix(adjacent, nrow = 2, byrow = TRUE))
 }
 
-## 6개의 direction을 구축하는 삼각형의 꼭지점들 저장.
+# 6개의 direction을 구축하는 삼각형의 꼭지점들 저장
 DIRECTION_TRIANGLE = function(j, index_mat)
 {
   direction_mat = matrix(0, nrow = 6, ncol = 3)
@@ -665,14 +668,14 @@ EVEN_R = function(index_list, Aind, r)
     node = left_three[j]
     index_list[[node]]$adj_index = TYPE5(index_list[[node]]$adj_index)
   }
-  ## Right side three, except 4 node case(제일 밑의 노드)
+## Right side three, except 4 node case(제일 밑의 노드)
   right_three = right_bounds[c(2 * c(1 : (r / 2)) - 1)][-1]
   for (j in 1 : length(right_three))
   {
     node = right_three[j]
     index_list[[node]]$adj_index = TYPE6(index_list[[node]]$adj_index)
   }
-  ## Two artificial node case (윗부분, 아랫부분)
+## Two artificial node case (윗부분, 아랫부분)
   for(j in 1 : length(upper_bounds))
   {
     node = upper_bounds[j]
@@ -706,16 +709,16 @@ ODD_R = function(index_list, Aind, r)
   right_bounds = sort(Aind[which((floor(Aind / r) == ceiling(Aind / r)))])
   upper_bounds = sort(Aind[which(Aind != r^2 & Aind > (r^2 - r + 1))])
   lower_bounds = sort(Aind[which(Aind != 1 & Aind < r)])
-  # 4 artificial node case
+# 4 artificial node case
   fours = c(r, r^2)
   index_list[[fours[1]]]$adj_index = TYPE1(index_list[[fours[1]]]$adj_index)
   index_list[[fours[2]]]$adj_index = TYPE2_2(index_list[[fours[2]]]$adj_index)
   
-  # 3 artificial node case - 좌측 맨위와 맨아래
+# 3 artificial node case - 좌측 맨위와 맨아래
   threes = c(min(left_bounds), max(left_bounds))
   index_list[[threes[1]]]$adj_index = TYPE3(index_list[[threes[1]]]$adj_index)
   index_list[[threes[2]]]$adj_index = TYPE4_2(index_list[[threes[2]]]$adj_index)
-  ## Left side three(특별히 위에서 정의한 노드는 제외하고 짝수 행에서 튀어나온 것들만)
+# Left side three(특별히 위에서 정의한 노드는 제외하고 짝수 행에서 튀어나온 것들만)
   left_index_three = c(2 * (1 : floor(r / 2)))
   left_three = left_bounds[left_index_three]
   for (j in 1 : length(left_three))
@@ -723,17 +726,17 @@ ODD_R = function(index_list, Aind, r)
     node = left_three[j]
     index_list[[node]]$adj_index = TYPE5(index_list[[node]]$adj_index)
   }
-  ## Right side three, except 4 node case(제일 밑의 노드)
+# Right side three, except 4 node case(제일 밑의 노드)
   right_index_three = c(1 : r)[-left_index_three]
   right_index_three = right_index_three[-c(1, length(right_index_three))]
-  ## 우측의 경우 첫번째와 마지막 노드는 4개 가지고 있어서 이들을 빼야 함.
+# 우측의 경우 첫번째와 마지막 노드는 4개 가지고 있어서 이들을 빼야 함.
   right_three = right_bounds[right_index_three]
   for (j in 1 : length(right_three))
   {
     node = right_three[j]
     index_list[[node]]$adj_index = TYPE6(index_list[[node]]$adj_index)
   }
-  ## Two artificial node case (윗부분, 아랫부분)
+# Two artificial node case (윗부분, 아랫부분)
   for(j in 1 : length(upper_bounds))
   {
     node = upper_bounds[j]
@@ -744,7 +747,7 @@ ODD_R = function(index_list, Aind, r)
     node = lower_bounds[j]
     index_list[[node]]$adj_index = TYPE8(index_list[[node]]$adj_index)   
   }
-  ## One artificial node case
+# One artificial node case
   left_one = left_bounds[c(2 * c(1 : floor(r / 2)) - 1)][-1]
   for(j in 1 : length(left_one))
   {
@@ -910,8 +913,7 @@ for(j in 1:100)
   
   simulation[151:200,]=mvrnorm(n = 50, c(0, 0, (2.5*6*sqrt(2))/(4*sqrt(3)),0), Sigma)
   
-  
-  #모의실험 분석
+#모의실험 분석
   
   iris.sc=simulation
   
@@ -923,20 +925,20 @@ for(j in 1:100)
   {
     bb = INDEX(r)
     
-    # build grid
+# build grid
     iris.grid = function(r) somgrid(xdim =  r, ydim = r, topo="hexagonal") #이게잘못된건아님
     
-    # build model
+# build model
     iris.som = som(iris.sc, grid=iris.grid(r), rlen=100, alpha=c(0.25,0.001))
     
-    #pd 들의 max를 구하기 위해 비교하는 함수 likelihood 반환 x, k, r, l : vector
+#pd 들의 max를 구하기 위해 비교하는 함수 likelihood 반환 x, k, r, l : vector
     pd=function(x,k,l,r){exp(-0.5*euc.dist(x,k))+exp(-0.5*euc.dist(x,l))+exp(-0.5*euc.dist(x,r))}
     
-    # function "euc.dist" : 벡터 x1과 x2 사이의 유클리디안제곱거리
+# function "euc.dist" : 벡터 x1과 x2 사이의 유클리디안제곱거리
     euc.dist <- function(x1, x2) (sum((x1 - x2) ^ 2)) # 
     
     
-    #function "arrow" : rxr 그리드 SOM에서 i 번째 객체의 6개방향에 대한 가상벡터 (승자벡터+방향벡터) 6,5,4,3,2,1 방향 순
+#function "arrow" : rxr 그리드 SOM에서 i 번째 객체의 6개방향에 대한 가상벡터 (승자벡터+방향벡터) 6,5,4,3,2,1 방향 순
     arrow=function(r,i)rbind(iris.som$codes[[1]][iris.som$unit.classif[i],]-iris.som$codes[[1]][1,]+iris.som$codes[[1]][2,],
                              iris.som$codes[[1]][iris.som$unit.classif[i],]-iris.som$codes[[1]][r+1,]+iris.som$codes[[1]][1,],
                              iris.som$codes[[1]][iris.som$unit.classif[i],]-iris.som$codes[[1]][r+2,]+iris.som$codes[[1]][1,],
@@ -944,17 +946,17 @@ for(j in 1:100)
                              iris.som$codes[[1]][iris.som$unit.classif[i],]+iris.som$codes[[1]][r+1,]-iris.som$codes[[1]][1,],
                              iris.som$codes[[1]][iris.som$unit.classif[i],]+iris.som$codes[[1]][1,]-iris.som$codes[[1]][2,])
     
-    # function "fincodes" : 원래 생성된 m개의 중량벡터 뒤에 6개의가상벡터연결
+# function "fincodes" : 원래 생성된 m개의 중량벡터 뒤에 6개의가상벡터연결
     fincodes=function(r,i)rbind(as.matrix(iris.som$codes[[1]]), arrow(r,i))
     
     
-    # r노드일때, i 번째 객체의 j번째 방향애 대한 k(node index) 함수 k=1(승자노드), k=2(왼쪽노드),k=3(오른쪽노드) 중량벡터
+# r노드일때, i 번째 객체의 j번째 방향애 대한 k(node index) 함수 k=1(승자노드), k=2(왼쪽노드),k=3(오른쪽노드) 중량벡터
     krl=function(i,j,k,r)fincodes(r,i)[ifelse(bb[[iris.som$unit.classif[i] ]]$directions[j,k]>0,
                                               bb[[iris.som$unit.classif[i] ]]$directions[j,k],
                                               nrow(fincodes(r,i))+bb[[iris.som$unit.classif[i] ]]$directions[j,k]+1),] 
     
     
-    #하고싶은건, 각 개체에 따라 6개의 방향에 대하여 최대인 방향찾고 그 방향 나타내는 index 저장
+#각 개체에 따라 6개의 방향에 대하여 최대인 방향찾고 그 방향 나타내는 index 저장
     
     direction_vector = rep(0, 200)
     
@@ -999,7 +1001,7 @@ for(j in 1:100)
       finweight[[i]]= EACHVECTOR(r,i) #r 을 매번 바꿔주기 
     }
     
-    ##  가능도함수 생성 및 p_r, p_l 함수 만들기
+#  가능도함수 생성 및 p_r, p_l 함수 만들기
     lik=function(i,w,b){
       exp((-0.5/b)*t(i-w)%*%(i-w))
     }
@@ -1014,9 +1016,9 @@ for(j in 1:100)
         (lik(iris.sc[i,],finweight[[i]][2,],b)+lik(iris.sc[i,],finweight[[i]][1,],b)) }
     
     
-    ##########coord 함수사용해서 beta구하기 여기서 a=p_r, b=p_l , k=승자노드, r=오른쪽노드, l=왼쪽노드
+#coord 함수사용해서 beta구하기 여기서 a=p_r, b=p_l , k=승자노드, r=오른쪽노드, l=왼쪽노드
     
-    # 원래 coord함수
+# 원래 coord함수
     coord=function(i,b){
       (((2*p_r(i,b)+2*p_l(i,b)-1)*finweight[[i]][1,])/(4*sqrt(3))+
          ((1-2*p_r(i,b)+p_l(i,b))*finweight[[i]][3,])/(2*sqrt(3))+
@@ -1072,7 +1074,7 @@ for(j in 1:100)
   simulation[151:200,]=mvrnorm(n = 50, c(0, 0, (2.5*6*sqrt(2))/(4*sqrt(3)),0), Sigma)
   
   
-  #모의실험 분석
+#모의실험 분석
   
   iris.sc=simulation
   set.seed(s)
@@ -1104,7 +1106,7 @@ for(j in 1:100)
                                               bb[[iris.som$unit.classif[i] ]]$directions[j,k],
                                               nrow(fincodes(r,i))),]
     
-    #하고싶은건, 각 개체에 따라 6개의 방향에 대하여 최대인 방향찾고 그 방향 나타내는 index 저장
+# 각 개체에 따라 6개의 방향에 대하여 최대인 방향찾고 그 방향 나타내는 index 저장
     
     direction_vector = rep(0, 150)
     
@@ -1147,7 +1149,7 @@ for(j in 1:100)
       finweight[[i]]= EACHVECTOR(r,i) #r 을 매번 바꿔주기 
     }
     
-    ##  가능도함수 생성 및 p_r, p_l 함수 만들기
+#  가능도함수 생성 및 p_r, p_l 함수 만들기
     lik=function(i,w,b){
       exp((-0.5/b)*t(i-w)%*%(i-w))
     }
@@ -1162,7 +1164,7 @@ for(j in 1:100)
         (lik(iris.sc[i,],finweight[[i]][2,],b)+lik(iris.sc[i,],finweight[[i]][1,],b)) }
     
     
-    ##########coord 함수사용해서 beta구하기 여기서 a=p_r, b=p_l , k=승자노드, r=오른쪽노드, l=왼쪽노드
+#coord 함수사용해서 beta구하기 여기서 a=p_r, b=p_l , k=승자노드, r=오른쪽노드, l=왼쪽노드
     
     coord=function(i,b){
       (((2*p_r(i,b)+2*p_l(i,b)-1)*finweight[[i]][1,])/(4*sqrt(3))+
@@ -1172,7 +1174,7 @@ for(j in 1:100)
     
     
     
-    #Q_beta 함수
+#Q_beta 함수
     
     Q_beta=function(b) {
       for(i in 1:200) {
