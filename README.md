@@ -9,7 +9,7 @@
   Self-organizing maps(SOM) is an unsupervised learning neural network model to visualize high dimensional data using a low dimensional grid space(Kohonen, 1990). SOM assigns objects to the center of the winning node, but it would be better to spread them all over the grid space to preserve continuity of the objects. Um(2003) proposed IL-SOM(Interpolating Likelihood for SOM) to express relative location of object vectors in a grid space using the likelihood of weight vectors of the winning node and its
 
 
-## Inspiration
+## 참고 자료
 
 * [논문 원문](https://drive.google.com/file/d/1MQvHF_roYARn-eJHJXq2UptAskAG-azw/view?usp=sharing)
 * [KCI 등재 자료](https://www.dropbox.com/s/ld13n32o9diu500/%EC%9C%A1%EA%B0%81%EA%B7%B8%EB%A6%AC%EB%93%9C%20IL-SOM%EC%9D%84%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EA%B0%9C%EC%B2%B4%20%EC%8B%9C%EA%B0%81%ED%99%94_KCI.pdf?dl=0)
